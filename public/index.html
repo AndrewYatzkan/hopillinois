@@ -7,11 +7,39 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+	<div class="loading">
+		<img class="alma" src="assets/alma.png">
+		<span>hopILLINOIS</span>
+		<img class="play" src="assets/play.png">
+	</div>
+	<div class="overlay">
+		<button class="create-event">+</button>
+		<div class="prompt">
+			<div class="info">
+				<span class="step">1/5</span>
+				<span class="instruction">Text?</span>
+			</div>
+			<div class="response">
+				<input type="text" placeholder="Type something here">
+				<button>
+					<img src="assets/rightarrow.png">
+				</button>
+			</div>
+		</div>
+		<div class="usertab">
+			<img class="avatar-preview" src="assets/alma.png">
+			<span class="username"></span>
+			<div class="stats">
+				<img src="assets/stats.png">
+			</div>
+		</div>
+	</div>
 	<canvas></canvas>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/ui.js"></script>
 	<script src="js/geolocation.js"></script>
 	<script src="js/canvas.js"></script>
 	<script src="js/socket.js"></script>
+	<script src="js/loading.js"></script>
 </body>
 </html>

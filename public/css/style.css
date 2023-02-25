@@ -1,6 +1,144 @@
+:root {
+	--illini-blue: #13294B;
+	--illini-orange: #FF5F05;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	font-family: 'VT323', monospace;
+}
+
+div.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: var(--illini-blue);
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+div.loading span {
+	color: white;
+	font-size: 2rem;
+	opacity: 0;
+	line-height: 2rem;
+}
+
+@keyframes fade-in {
+	0% { opacity: 0 },
+	100% { opacity: 1!important }
+}
+
+div.loading span.visible {
+	animation: 1s fade-in forwards;
+	opacity: 1;
+}
+
+img.alma {
+	width: 20vh;
+	height: 20vh;
+}
+
+img.play {
+	width: 10rem;
+	height: auto;
+	cursor: pointer;
+	image-rendering: pixelated;
+	opacity: 0;
+	padding-top: 2rem;
+}
+
+img.play.visible {
+	animation: 1s fade-in forwards;
+	opacity: 1;
+}
+
+div.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	pointer-events: none;
+/*	display: flex;*/
+}
+
+div.overlay * {
+	pointer-events: initial;
+}
+
+.usertab {
+	position: absolute;
+	bottom: 0;
+	height: 5rem;
+	width: calc(100% - 2rem);
+	margin: 1rem;
+	border-radius: 3px;
+	background: var(--illini-blue);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.avatar-preview {
+	background: white;
+	margin: 5px;
+	border-radius: 3px;
+	height: calc(5rem - 10px);
+}
+
+.usertab .username {
+	color: white;
+	font-size: 3rem;
+}
+
+.usertab .stats {
+	height: 100%;
+	width: 5rem;
+	background: green;
+}
+
+.usertab .stats img {
+	height: 100%;
+	padding: 5px 0;
+	box-sizing: border-box;
+}
+
+.prompt {
+	position: absolute;
+	top: 0;
+	padding: 1rem;
+	box-sizing: border-box;
+	width: calc(100% - 2rem);
+	margin: 1rem;
+	border-radius: 3px;
+	background: var(--illini-blue);
+	display: flex;
+	flex-direction: column;
+
+	display: none;
+}
+
+.prompt .info {
+	font-size: 2rem;
+	color: white;
+}
+
+.prompt .info .step {
+	color: var(--illini-orange);
+}
+
+.prompt input {
+	background: rgba(191, 191, 191, 0.25);
+	border: none;
+	border-radius: 3px;
 }

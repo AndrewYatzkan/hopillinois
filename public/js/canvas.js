@@ -20,9 +20,13 @@ ctx.webkitImageSmoothingEnabled = false;
 
 let images = {};
 
+
+let resourcesLoaded = 0;
+let totalResources = 67;
+
 function loadImage(name) {
 	images[name] = new Image();
-	// images[name].onLoad = resourceLoaded;
+	images[name].onload = () => resourcesLoaded++;
 	images[name].src = `./assets/${name}.png`;
 }
 
@@ -40,14 +44,20 @@ for (let i = 0; i <= 59; i++) {
 	loadImage(`tiles/grainger${i}`);
 }
 
-// let resourcesLoaded = 0;
-// let totalResources = 3;
-// const resourceLoaded = () => { if (++resourcesLoaded == totalResources) draw(); }
+promises.push(new Promise((resolve, reject) => {
+	let interval = setInterval(() => {
+		if (resourcesLoaded === totalResources) {
+			clearInterval(interval);
+			resolve();
+		}
+	}, 50);
+}));
 
 function drawAvatar() {
 	// ctx.drawImage(images['avatar'], 0, 64 - 80, 64, 80);
 	let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = state.avatar;
-	ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, dWidth - dHeight, dWidth, dHeight);
+	// ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, dWidth - dHeight, dWidth, dHeight);
+	ctx.drawImage(image, sx, sy, sWidth, sHeight, dWidth/2, dWidth - dHeight / 2, dWidth, dHeight);
 
 	let name = window.netID;
 	var textWidth = ctx.measureText(name).width;
@@ -55,8 +65,8 @@ function drawAvatar() {
 	let height = 20;
 	let width = textWidth + 9 + 15;
 	let verticalPadding = 5;
-	let x = (dWidth - width) / 2;
-	let y = dWidth - dHeight - height - verticalPadding;
+	let x = (dWidth - width) / 2 + dWidth / 2;
+	let y = dWidth - dHeight/2 - height - verticalPadding;
 	ctx.drawImage(images['nametag'], 0, 0, 55, 16, x, y, width, height)
 	ctx.drawImage(images['greendot'], 0, 0, 9, 9, x + 5, y + 5, 9, 9)
 
@@ -283,8 +293,8 @@ function drawEvents(drawText=false) {
 }
 
 window.addEventListener('wheel', e => {
-	let min = 0.3;
-	let max = 4;
+	let min = 0.7;
+	let max = 2.3;
 	state.zoom = Math.max(Math.min(state.zoom + e.deltaY * 0.01, max), min);
 });
 
