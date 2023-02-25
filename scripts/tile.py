@@ -14,7 +14,7 @@ def tile(filename, img, h, w):
     for i in range(h):
         for j in range(w):
             sub_img = img[(sub_h * i):(sub_h * (i+1)), (sub_w * j):(sub_w * (j+1))]
-            # cv2.imwrite(filename + str(counter) + ".png", sub_img)
+            cv2.imwrite(filename + str(counter) + ".png", sub_img)
             print("grainger" + str(counter))
             counter += 1
 
@@ -24,7 +24,7 @@ def main():
     img = cv2.imread(img_file)
     plt.imshow(img)
     plt.show()
-    tile("./assets/tiled/grainger", img, 5, 12)
+    tile("../public/assets/tiles/grainger", img, 5, 12)
         
 if __name__ == "__main__":
     main()
