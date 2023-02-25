@@ -1,7 +1,11 @@
 socket = io();
 
-const setNetID = (netID) => window.netID = netID;
+const setNetID = (netID) => {
+	window.netID = netID;
+	document.querySelector('.usertab .username').innerText = netID;
+}
 
+// TODO: wait until we have geolocation to spawn in at proper position
 socket.emit('ready', {position: [0, 0]}, setNetID);
 
 
