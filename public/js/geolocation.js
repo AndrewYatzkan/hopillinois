@@ -6,6 +6,16 @@ async function init() {
     document.body.innerHTML = 'Your browser does not support geolocation.';
   }
 
+  // FOR TESTING
+  clientLocation = {latitude: 40.11189902507066, longitude: -88.22705020329083};
+  setInterval(() => {
+    clientLocation = {
+      latitude: 40.11037078334671 + Math.random() * 0.002392755242,
+      longitude: -88.22878141253977 + Math.random() * 0.003106385747
+    }
+  }, 2_000);
+  return;
+  // FOR TESTING
   clientLocation = await getGeolocation(); // will prompt user if they haven't already granted perms
   let hasGeolocationPerms = !!location;
   if (!hasGeolocationPerms) return needsGeolocationPerms();

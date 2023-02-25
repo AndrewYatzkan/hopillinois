@@ -26,18 +26,41 @@ function loadImage(name) {
 	images[name].src = `./assets/${name}.png`;
 }
 
-loadImage('avatar');
+loadImage('sprite1');
+loadImage('sprite2');
 
-// loadImage('grass1');
 loadImage('backdrop');
-loadImage('grass2');
+loadImage('grass');
+
+loadImage('nametag');
+loadImage('greendot');
 
 // let resourcesLoaded = 0;
 // let totalResources = 3;
 // const resourceLoaded = () => { if (++resourcesLoaded == totalResources) draw(); }
 
 function drawAvatar() {
-	ctx.drawImage(images['avatar'], 0, 64 - 80, 64, 80);
+	// ctx.drawImage(images['avatar'], 0, 64 - 80, 64, 80);
+	let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = state.avatar;
+	ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, dWidth - dHeight, dWidth, dHeight);
+
+	let name = 'yatzk';
+
+	let height = 20;
+	// let width = 70;
+	let width = name.length * 8 + 10;
+	let verticalPadding = 5;
+	let x = (dWidth - width) / 2;
+	let y = dWidth - dHeight - height - verticalPadding;
+	ctx.drawImage(images['nametag'], 0, 0, 55, 16, x, y, width, height)
+	// ctx.drawImage(images['greendot'], 0, 0, 55, 16, x, y, width, height)
+
+	ctx.fillStyle = 'black';
+	ctx.font = `15px VT323, monospace`;
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle'; // default: 'alphabetic'
+	ctx.fillText(name, x + (width) / 2 + 6, y + height / 2 - 1);
+
 }
 
 function drawPlayers() {
@@ -45,15 +68,30 @@ function drawPlayers() {
 		if (player.netID === window.netID) continue;
 		if (player.position[0] < 0 || player.position[0] >= MAP_DIMS[0] ||
 			player.position[1] < 0 || player.position[1] >= MAP_DIMS[1]) continue; // don't draw out of bounds players
-		ctx.drawImage(images['avatar'], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
+			let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = player.avatar;
+		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE - (dWidth - dHeight), dWidth, dHeight);
+		// ctx.drawImage(images[image], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
 	}
 }
+
+let sprites = ['sprite1', 'sprite2'];
 
 let state = {
 	// position: [40.1106138, -88.229867],
 	position: [0, 0],
 	targetPosition: [4, 5],
-	zoom: 1
+	zoom: 1.5,
+	avatar: {
+		frame: 0,
+		dir: 2,
+		image: images[sprites[Math.floor(Math.random() * sprites.length)]], // random avatar
+		sx: 17 + 64 * 0,
+		sy: 525 + 64 * 2,
+		sWidth: 30,
+		sHeight: 54,
+		dWidth: 64,
+		dHeight: 80
+	}
 };
 
 document.body.addEventListener('keydown', e => {
@@ -77,7 +115,7 @@ document.body.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
     	let eventName = prompt('Enter an event name');
     	if (!eventName) return;
-    	let location = [52, 54];
+    	let location = [2, 3];
     	let start = Date.now();
     	let end = Date.now() + 1000 * 60 * 5; // 5 mins
     	createEvent(eventName, location, start, end)
@@ -87,22 +125,41 @@ document.body.addEventListener('keydown', e => {
 
 // smooth walking (slowly goes to state.targetPosition from state.position)
 let walkInterval = setInterval(() => {
+	let dx, dy;
 	for (let i of [0, 1]) {
 		let d = state.targetPosition[i] - state.position[i];
 		let maxMove = Math.max(0.05, Math.abs(d / 20)); // d / 20 => 20 * 10ms = 0.2s to stop
 		let sign = d / Math.abs(d) || 1;
 		let inc = sign * Math.min(Math.abs(d), maxMove);
+		if (i == 0) dx = inc;
+		else dy = inc;
 		state.position[i] += inc;
 	}
+
+	let {frame, dir} = state.avatar;
+	if (dx !== 0 || dy !== 0) {
+		frame += 0.1;
+		frame %= 9;
+		if (Math.abs(dx) > Math.abs(dy)) {
+			if (dx > 0) dir = 3;
+			else dir = 1;
+		} else {
+			if (dy > 0) dir = 2;
+			else dir = 0;
+		}
+	} else {
+		frame = 0;
+	}
+
+	state.avatar = {
+		...state.avatar,
+		frame: frame,
+		dir: dir,
+		sx: 17 + 64 * Math.floor(frame),
+		sy: 525 + 64 * dir,
+	}
+
 }, 10);
-
-function latLonToCoords(lat, lon) {
-	// ...
-}
-
-function coordsToLatLon(x, y) {
-	// ...
-}
 
 // const MAP = [
 // 	[0, 50, 200],
@@ -112,6 +169,41 @@ function coordsToLatLon(x, y) {
 
 let MAP = [];
 let MAP_DIMS = [32, 32];
+
+// 31 -> 0
+let MAP_LAT = [40.11037078334671,40.110449068278385,40.110527353119934,40.11060563787141,40.110683922532765,40.110758803428865,40.11083028057097,40.11091537230886,40.110993656613715,40.11107194082847,40.111153628608676,40.111218298031744,40.11129998563613,40.11138167314245,40.11144974598941,40.11152802967919,40.1116097169116,40.11168800041727,40.11175947658287,40.11184456715828,40.11191263954194,40.11199772992573,40.112076012984765,40.11214748874259,40.11222236802738,40.1122938436314,40.11236872275504,40.11244360179625,40.112525287929,40.11260697396363,40.112671642004834,40.112763538589135];
+
+// 0 -> 31
+let MAP_LON = [-88.22878141253977,-88.22867015230528,-88.22856779288952,-88.22848768552068,-88.2283675244674,-88.22828296668918,-88.22816280563592,-88.22806934703894,-88.22797143803257,-88.2278735290262,-88.22777562001984,-88.22768661183224,-88.22758870282587,-88.22747744259135,-88.2273750831756,-88.22727272375987,-88.22716591393474,-88.22707245533775,-88.22697454633138,-88.22686773650626,-88.22677427790927,-88.226654116856,-88.22656510866838,-88.22647165007139,-88.22636484024628,-88.226244679193,-88.22616457182416,-88.22605331158967,-88.22596430340204,-88.22585304316753,-88.22576848538932,-88.22567502679233];
+
+// TODO: add padding for out of bounds
+function latLonToCoords(lat, lon) {
+	let x, y;
+	let outOfBoundsCoords = [-50, -50];
+	if (lon < MAP_LON[0]) return outOfBoundsCoords;
+	if (lon > MAP_LON[MAP_LON.length - 1]) return outOfBoundsCoords;
+	for (let i = 1; i < MAP_LON.length; i++) {
+		let smaller = MAP_LON[i - 1];
+		let larger = MAP_LON[i];
+		if (lon >= smaller && lon <= larger) {
+			x = (i - 1) + (lon - smaller) / (larger - smaller);
+			break;
+		}
+	}
+
+	if (lat < MAP_LAT[0]) return outOfBoundsCoords;
+	if (lat > MAP_LAT[MAP_LAT.length - 1]) return outOfBoundsCoords;
+	for (let i = 1; i < MAP_LAT.length; i++) {
+		let smaller = MAP_LAT[i - 1];
+		let larger = MAP_LAT[i];
+		if (lat >= smaller && lat <= larger) {
+			y = (i - 1) + (lat - smaller) / (larger - smaller);
+			break;
+		}
+	}
+
+	return [x, MAP_LAT.length - 1 - y];
+}
 
 for (let i = 0; i < 32; i++) {
 	MAP[i] = [];
@@ -126,7 +218,7 @@ function drawMap() {
 		for (let j = 0; j < MAP[i].length; j++) {
 			let x = j * TILE_SIZE;
 			let y = i * TILE_SIZE;
-			ctx.drawImage(images['grass2'], x, y, TILE_SIZE, TILE_SIZE);
+			ctx.drawImage(images['grass'], x, y, TILE_SIZE, TILE_SIZE);
 			// ctx.fillStyle = `rgb(${MAP[i][j]}, ${MAP[i][j]}, ${MAP[i][j]})`;
 			// ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
 		}
@@ -150,13 +242,21 @@ function drawOutOfBounds() {
 }
 
 
-function drawEvents() {
+function drawEvents(drawText=false) {
 	for (let {location, name} of events) {
 		ctx.fillStyle = 'red';
-		ctx.font = '30px Arial';
+		ctx.font = `30px VT323, monospace`;
 		location = location.map(x => x * TILE_SIZE);
-		ctx.fillRect(location[0], location[1], TILE_SIZE, TILE_SIZE);
-		ctx.fillText(name, location[0], location[1] - 10);
+
+		if (!drawText)
+			ctx.fillRect(location[0], location[1], TILE_SIZE, TILE_SIZE);
+
+		let z = state.zoom;
+		ctx.scale(1/z, 1/z);
+		ctx.textAlign = 'center';
+		if (drawText)
+			ctx.fillText(name, (location[0] + TILE_SIZE / 2) * z, (location[1] - 10) * z);
+		ctx.scale(z, z);
 	}
 }
 
@@ -173,6 +273,11 @@ function draw() {
 	if (!netID) return requestAnimationFrame(draw);
 	let z = state.zoom;
 
+	// if (clientLocation) {
+	// 	let {latitude, longitude} = clientLocation;
+	// 	state.targetPosition = latLonToCoords(latitude, longitude);
+	// }
+
 	ctx.translate((w - TILE_SIZE * z) / 2, (h - TILE_SIZE * z) / 2);
 	ctx.fillRect(0, 0, w, h);
 
@@ -184,8 +289,12 @@ function draw() {
 	drawPlayers();
 	ctx.translate(state.position[0] * TILE_SIZE, state.position[1] * TILE_SIZE);
 
-
 	drawAvatar(); // draws sprite in middle of screen
+
+	ctx.translate(-state.position[0] * TILE_SIZE, -state.position[1] * TILE_SIZE); // new 0, 0 is x, y
+	drawEvents(true);
+	ctx.translate(state.position[0] * TILE_SIZE, state.position[1] * TILE_SIZE);
+
 	ctx.scale(1/z, 1/z);
 	ctx.translate(-(w - TILE_SIZE * z) / 2, -(h - TILE_SIZE * z) / 2);
 

@@ -124,7 +124,7 @@ app.get('/login', (req, res) => {
 
 setInterval(() => {
     io.emit('game state', {
-        players: sockets.map(x => { return { netID: x.netID, position: x.position} }),
+        players: sockets.map(x => { return { netID: x.netID, position: x.position, avatar: x.avatar} }),
         events: events.map(x => { return {
             creator: x.creator,
             location: x.location,
@@ -164,10 +164,11 @@ io.on('connection', socket => {
 		// console.log(sockets);
 	});
 
-    socket.on('position update', position => {
+    socket.on('player update', ({position, avatar}) => {
         for (let i = 0; i < sockets.length; i++) {
             if (sockets[i].netID === netID) {
                 sockets[i].position = position;
+                sockets[i].avatar = avatar;
             }
         }
     });
