@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+const PROD = process.env.ENV === 'PROD';
+
+const http = require('http');
+const https = require('https');
+
 const User = require('./models/User');
 const Event = require('./models/Event');
 
@@ -12,9 +17,14 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const port = 3000;
+const httpServer = http.createServer(app);
+const httpsServer = PROD ? https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/hopillinois.com/privkey.pem', 'utf-8'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/hopillinois.com/fullchain.pem', 'utf-8'),
+}, app) : null;
+
+const io = require('socket.io')(PROD ? httpsServer : httpServer);
+const port = PROD ? 80 : 3000;
 
 const BASE_URL = IS_PROD ? '??????' : 'http://localhost:3000';
 
@@ -183,4 +193,5 @@ io.on('connection', socket => {
     });
 });
 
-http.listen(port, () => console.log(`Listening on port ${port}`));
+httpServer.listen(port, () => console.log(`listening on *:${port}`));
+if (httpsServer) httpsServer.listen(443, () => console.log(`listening on *:${443}`));

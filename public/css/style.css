@@ -122,7 +122,7 @@ div.overlay * {
 	margin: 1rem;
 	border-radius: 3px;
 	background: var(--illini-blue);
-	display: flex;
+/*	display: flex;*/
 	flex-direction: column;
 
 	display: none;
@@ -139,6 +139,7 @@ div.overlay * {
 
 .prompt input {
 	background: rgba(191, 191, 191, 0.25);
+	outline: none;
 	border: none;
 	border-radius: 3px;
 }
