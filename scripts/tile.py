@@ -15,16 +15,16 @@ def tile(filename, img, h, w):
         for j in range(w):
             sub_img = img[(sub_h * i):(sub_h * (i+1)), (sub_w * j):(sub_w * (j+1))]
             cv2.imwrite(filename + str(counter) + ".png", sub_img)
-            print("grainger" + str(counter))
+            print("ehall" + str(counter))
             counter += 1
 
 def main():
     # Import image as OpenCV object
-    img_file = "./assets/art/grainger.png"
-    img = cv2.imread(img_file)
+    img_file = "./assets/art/ehall.png"
+    img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
     plt.imshow(img)
     plt.show()
-    tile("../public/assets/tiles/grainger", img, 5, 12)
+    tile("../public/assets/tiles/ehall", img, 6, 9)
         
 if __name__ == "__main__":
     main()
