@@ -35,7 +35,7 @@ const BASE_URL = PROD ? 'https://hopillinois.com' : 'http://localhost:3000';
 
 let sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
-    cookie: { secure: IS_PROD }, // https://stackoverflow.com/a/23119369/9307157
+    cookie: { secure: PROD }, // https://stackoverflow.com/a/23119369/9307157
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongoUrl })
