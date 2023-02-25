@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const fs = require('fs');
 const PROD = process.env.ENV === 'PROD';
 
 const http = require('http');
@@ -8,7 +9,7 @@ const https = require('https');
 const User = require('./models/User');
 const Event = require('./models/Event');
 
-const { mongoUrl, IS_PROD } = require('./db');
+const { mongoUrl } = require('./db');
 
 const express = require('express');
 const session = require('express-session');
@@ -26,7 +27,7 @@ const httpsServer = PROD ? https.createServer({
 const io = require('socket.io')(PROD ? httpsServer : httpServer);
 const port = PROD ? 80 : 3000;
 
-const BASE_URL = IS_PROD ? '??????' : 'http://localhost:3000';
+const BASE_URL = PROD ? 'https://hopillinois.com' : 'http://localhost:3000';
 
 /**************************************
  ***         AUTHENTICATION         ***
