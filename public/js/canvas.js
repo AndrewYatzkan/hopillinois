@@ -28,38 +28,36 @@ function loadImage(name) {
 
 loadImage('avatar');
 
+// loadImage('grass1');
+loadImage('backdrop');
+loadImage('grass2');
+
 // let resourcesLoaded = 0;
 // let totalResources = 3;
 // const resourceLoaded = () => { if (++resourcesLoaded == totalResources) draw(); }
 
-// x, y are center of avatar
 function drawAvatar() {
-	let img = images['avatar'];
-	// ctx.drawImage(images['avatar'], (w - img.width) / 2, (h - img.height) / 2);
-	// ctx.fillStyle = 'red';
-	// ctx.fillRect(0, 0, 64, 64);
-	// ctx.fillStyle = 'purple';
-	// ctx.fillRect((w - 64) / 2, (h - 64) / 2, 64, 64);
-
-	// let x = 1/state.zoom * (w - 64 * state.zoom) / 2;
-	// let y = 1/state.zoom * (h - 64 * state.zoom) / 2
-	// x = x - x % TILE_SIZE;
-	// y = y - y % TILE_SIZE;
-
-	// ctx.drawImage(images['avatar'], x, y, 64, 64);
 	ctx.drawImage(images['avatar'], 0, 64 - 80, 64, 80);
-	// ctx.drawImage(images['avatar'], 64 * 4, 64 * 2, 64, 64);
+}
+
+function drawPlayers() {
+	for (let player of window.players) {
+		if (player.netID === window.netID) continue;
+		if (player.position[0] < 0 || player.position[0] >= MAP_DIMS[0] ||
+			player.position[1] < 0 || player.position[1] >= MAP_DIMS[1]) continue; // don't draw out of bounds players
+		ctx.drawImage(images['avatar'], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
+	}
 }
 
 let state = {
 	// position: [40.1106138, -88.229867],
 	position: [0, 0],
-	targetPosition: [50, 50],
-	zoom: 1.5//1
+	targetPosition: [4, 5],
+	zoom: 1
 };
 
 document.body.addEventListener('keydown', e => {
-	let inc = 1;
+	let inc = 1.0;
     switch (e.key) {
     	case 'ArrowUp':
     		state.targetPosition[1]-=inc;
@@ -74,6 +72,17 @@ document.body.addEventListener('keydown', e => {
     		state.targetPosition[0]+=inc;
     		break;
     }
+
+    // TEMPORARY
+    if (e.key === 'Enter') {
+    	let eventName = prompt('Enter an event name');
+    	if (!eventName) return;
+    	let location = [52, 54];
+    	let start = Date.now();
+    	let end = Date.now() + 1000 * 60 * 5; // 5 mins
+    	createEvent(eventName, location, start, end)
+    }
+    // TEMPORARY
 });
 
 // smooth walking (slowly goes to state.targetPosition from state.position)
@@ -102,10 +111,11 @@ function coordsToLatLon(x, y) {
 // ];
 
 let MAP = [];
+let MAP_DIMS = [32, 32];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 32; i++) {
 	MAP[i] = [];
-	for (let j = 0; j < 100; j++) {
+	for (let j = 0; j < 32; j++) {
 		MAP[i][j] = Math.random() * 255;
 	}
 }
@@ -116,9 +126,37 @@ function drawMap() {
 		for (let j = 0; j < MAP[i].length; j++) {
 			let x = j * TILE_SIZE;
 			let y = i * TILE_SIZE;
-			ctx.fillStyle = `rgb(${MAP[i][j]}, ${MAP[i][j]}, ${MAP[i][j]})`;
-			ctx.fillRect(x, y, 64, 64);
+			ctx.drawImage(images['grass2'], x, y, TILE_SIZE, TILE_SIZE);
+			// ctx.fillStyle = `rgb(${MAP[i][j]}, ${MAP[i][j]}, ${MAP[i][j]})`;
+			// ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
 		}
+	}
+}
+
+function drawOutOfBounds() {
+	ctx.drawImage(images['backdrop'], -100 * TILE_SIZE, -100 * TILE_SIZE, TILE_SIZE * 200, TILE_SIZE * 200);
+	// let range = 100;
+	// for (let i = -range; i < range; i++) {
+	// 	for (let j = -range; j < range; j++) {
+	// 		if (i >= 0 && i < MAP.length && j >= 0 && j < MAP[0].length)
+	// 			continue;
+	// 		let x = j * TILE_SIZE;
+	// 		let y = i * TILE_SIZE;
+	// 		ctx.drawImage(images['grass1'], x, y, TILE_SIZE, TILE_SIZE);
+	// 		// ctx.fillStyle = `rgb(${n}, ${n}, ${n})`;
+	// 		// ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+	// 	}
+	// }
+}
+
+
+function drawEvents() {
+	for (let {location, name} of events) {
+		ctx.fillStyle = 'red';
+		ctx.font = '30px Arial';
+		location = location.map(x => x * TILE_SIZE);
+		ctx.fillRect(location[0], location[1], TILE_SIZE, TILE_SIZE);
+		ctx.fillText(name, location[0], location[1] - 10);
 	}
 }
 
@@ -128,8 +166,11 @@ window.addEventListener('wheel', e => {
 	state.zoom = Math.max(Math.min(state.zoom + e.deltaY * 0.01, max), min);
 });
 
-function draw() {
+window.netID = false;
+window.players = [];
 
+function draw() {
+	if (!netID) return requestAnimationFrame(draw);
 	let z = state.zoom;
 
 	ctx.translate((w - TILE_SIZE * z) / 2, (h - TILE_SIZE * z) / 2);
@@ -137,7 +178,10 @@ function draw() {
 
 	ctx.scale(z, z);
 	ctx.translate(-state.position[0] * TILE_SIZE, -state.position[1] * TILE_SIZE); // new 0, 0 is x, y
+	drawOutOfBounds();
 	drawMap();
+	drawEvents();
+	drawPlayers();
 	ctx.translate(state.position[0] * TILE_SIZE, state.position[1] * TILE_SIZE);
 
 
