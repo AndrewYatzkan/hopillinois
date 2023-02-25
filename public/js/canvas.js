@@ -28,12 +28,17 @@ function loadImage(name) {
 
 loadImage('sprite1');
 loadImage('sprite2');
+loadImage('sprite3');
 
 loadImage('backdrop');
 loadImage('grass');
 
 loadImage('nametag');
 loadImage('greendot');
+
+for (let i = 0; i <= 59; i++) {
+	loadImage(`tiles/grainger${i}`);
+}
 
 // let resourcesLoaded = 0;
 // let totalResources = 3;
@@ -70,7 +75,7 @@ function drawPlayers() {
 			player.position[1] < 0 || player.position[1] >= MAP_DIMS[1]) continue; // don't draw out of bounds players
 	
 		let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = player.avatar;
-		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE - (dWidth - dHeight), dWidth, dHeight);
+		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE + (dWidth - dHeight), dWidth, dHeight);
 		// ctx.drawImage(images[image], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
 
 		let name = player.netID;
@@ -79,8 +84,9 @@ function drawPlayers() {
 		let height = 20;
 		let width = textWidth + 9 + 15;
 		let verticalPadding = 5;
-		let x = player.position[0] * TILE_SIZE;
-		let y = player.position[1] * TILE_SIZE - 2 * verticalPadding;
+		let x = player.position[0] * TILE_SIZE - player.avatar.dWidth / 2;
+		// let y = player.position[1] * TILE_SIZE - 2 * verticalPadding;
+		let y = player.position[1] * TILE_SIZE + (dWidth - dHeight) - height - verticalPadding;
 		ctx.drawImage(images['nametag'], 0, 0, 55, 16, x, y, width, height)
 		ctx.drawImage(images['greendot'], 0, 0, 9, 9, x + 5, y + 5, 9, 9)
 
@@ -92,7 +98,7 @@ function drawPlayers() {
 	}
 }
 
-let sprites = ['sprite1', 'sprite2'];
+let sprites = ['sprite1', 'sprite2', 'sprite3'];
 
 let state = {
 	// position: [40.1106138, -88.229867],
@@ -107,13 +113,16 @@ let state = {
 		sy: 525 + 64 * 2,
 		sWidth: 30,
 		sHeight: 54,
-		dWidth: 64,
-		dHeight: 80
+		// dWidth: 64,
+		// dHeight: 80
+		dWidth: 32,
+		dHeight: 40
 	}
 };
 
 document.body.addEventListener('keydown', e => {
 	let inc = 1.0;
+	// let inc = 0.5;
     switch (e.key) {
     	case 'ArrowUp':
     		state.targetPosition[1]-=inc;
@@ -185,7 +194,7 @@ let walkInterval = setInterval(() => {
 // 	[50, 0, 80]
 // ];
 
-let MAP = [];
+let MAP = [["tiles/grainger0","tiles/grainger1","tiles/grainger2","tiles/grainger3","tiles/grainger4","tiles/grainger5","tiles/grainger6","tiles/grainger7","tiles/grainger8","tiles/grainger9","tiles/grainger10","tiles/grainger11",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["tiles/grainger12","tiles/grainger13","tiles/grainger14","tiles/grainger15","tiles/grainger16","tiles/grainger17","tiles/grainger18","tiles/grainger19","tiles/grainger20","tiles/grainger21","tiles/grainger22","tiles/grainger23",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["tiles/grainger24","tiles/grainger25","tiles/grainger26","tiles/grainger27","tiles/grainger28","tiles/grainger29","tiles/grainger30","tiles/grainger31","tiles/grainger32","tiles/grainger33","tiles/grainger34","tiles/grainger35",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["tiles/grainger36","tiles/grainger37","tiles/grainger38","tiles/grainger39","tiles/grainger40","tiles/grainger41","tiles/grainger42","tiles/grainger43","tiles/grainger44","tiles/grainger45","tiles/grainger46","tiles/grainger47",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["tiles/grainger48","tiles/grainger49","tiles/grainger50","tiles/grainger51","tiles/grainger52","tiles/grainger53","tiles/grainger54","tiles/grainger55","tiles/grainger56","tiles/grainger57","tiles/grainger58","tiles/grainger59",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]];
 let MAP_DIMS = [32, 32];
 
 // 31 -> 0
@@ -223,20 +232,15 @@ function latLonToCoords(lat, lon) {
 	return [x, MAP_LAT.length - 1 - y];
 }
 
-for (let i = 0; i < 32; i++) {
-	MAP[i] = [];
-	for (let j = 0; j < 32; j++) {
-		MAP[i][j] = Math.random() * 255;
-	}
-}
-
 const TILE_SIZE = 64;
 function drawMap() {
 	for (let i = 0; i < MAP.length; i++) {
 		for (let j = 0; j < MAP[i].length; j++) {
 			let x = j * TILE_SIZE;
 			let y = i * TILE_SIZE;
-			ctx.drawImage(images['grass'], x, y, TILE_SIZE, TILE_SIZE);
+
+			let image = MAP[i][j] || 'grass';
+			ctx.drawImage(images[image], x, y, TILE_SIZE, TILE_SIZE);
 			// ctx.fillStyle = `rgb(${MAP[i][j]}, ${MAP[i][j]}, ${MAP[i][j]})`;
 			// ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
 		}
