@@ -84,6 +84,7 @@ function drawPlayers() {
 		if (player.position[0] < 0 || player.position[0] >= MAP_DIMS[0] ||
 			player.position[1] < 0 || player.position[1] >= MAP_DIMS[1]) continue; // don't draw out of bounds players
 	
+		if (!player.avatar) continue; // not loaded yet
 		let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = player.avatar;
 		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE + (dWidth - dHeight), dWidth, dHeight);
 		// ctx.drawImage(images[image], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
