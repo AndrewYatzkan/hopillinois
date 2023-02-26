@@ -66,13 +66,18 @@ div.loading span.visible {
 	background-color: var(--illini-orange);
 	align-items: center;
 	justify-content: center;
-	height: 4rem;
-	width: 4rem;
+	height: 2rem;
+	width: 2rem;
 	border: none;
 	border-radius: 5px;
 	font-size: 3rem;
 	margin: 1rem;
 	display: none;
+	font-family: 'VT323', monospace;
+}
+
+.create-event img {
+	width: 80%;
 }
 
 img.alma {
@@ -185,6 +190,10 @@ div.overlay * {
 	height: 3rem;
 }
 
+.prompt button {
+	font-size: 1.5rem;
+}
+
 .prompt .backarrow {
 	width: 3rem;
 	margin-right: 0.75rem;
@@ -212,6 +221,11 @@ div.overlay * {
 	width: 15rem;
 	margin-right: 0.75rem;
 	font-size: 1rem;
+
+	text-align: center;
+	padding: 0px 5px;
+	font-family: 'VT323', monospace;;
+	color: white;
 }
 
 ::placeholder {

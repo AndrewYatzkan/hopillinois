@@ -182,16 +182,16 @@ document.body.addEventListener('keydown', e => {
     		break;
     }
 
-    // TEMPORARY
-    if (e.key === 'Enter') {
-    	let eventName = prompt('Enter an event name');
-    	if (!eventName) return;
-    	let location = [2, 3];
-    	let start = Date.now();
-    	let end = Date.now() + 1000 * 60 * 5; // 5 mins
-    	createEvent(eventName, 'desc', location, 1, start, end)
-    }
-    // TEMPORARY
+    // // TEMPORARY
+    // if (e.key === 'Enter') {
+    // 	let eventName = prompt('Enter an event name');
+    // 	if (!eventName) return;
+    // 	let location = [2, 3];
+    // 	let start = Date.now();
+    // 	let end = Date.now() + 1000 * 60 * 5; // 5 mins
+    // 	createEvent(eventName, 'desc', location, 1, start, end)
+    // }
+    // // TEMPORARY
 });
 
 // smooth walking (slowly goes to state.targetPosition from state.position)

@@ -6,13 +6,22 @@
 	
 	playBtn.classList.add('visible');
 	playBtn.onclick = () => {
+		animate({
+			duration: 1000,
+			timing(timeFraction) {
+			  return timeFraction;
+			},
+			draw(progress) {
+			  elem.style.width = progress * 100 + '%';
+			}
+		});
 		loading.style.display = 'none';
 		window.mode = 'regular';
 		usertab.style.display = 'flex';
 		createEventBtn.style.display = 'flex';
 	}
 
-	let animate = ({timing, draw, duration}) => {
+	let animate = ({timingFunction, draw, duration}) => {
 
 		let start = performance.now();
 	  

@@ -14,6 +14,7 @@ let promptBtn = document.querySelector('.response button');
 let promptInput = promptEl.querySelector('input');
 let responseEl = document.querySelector('.response');
 let eventConfirm = document.querySelector('.event-confirm');
+let info = document.querySelector('.prompt .info');
 
 let confirmEvent = document.querySelector('.event-confirm .confirm');
 let cancelEvent = document.querySelector('.event-confirm .cancel');
@@ -53,10 +54,11 @@ cancelEvent.onclick = () => {
 }
 
 function resetEventCreation() {
+  info.style.paddingBottom = '0.75rem';
   promptBtn.style.display = 'inline';
   promptBtn.innerHTML = '<img src="assets/rightarrow.png"></img>';
   promptInput.style.display = 'inline';
-  createEventBtn.style.display = 'block';
+  createEventBtn.style.display = 'flex';
   promptEl.style.display = 'none';
   usertab.style.display = 'flex';
   responseEl.style.display = 'flex';
@@ -92,12 +94,13 @@ promptBtn.onclick = () => {
     window.mode = 'drop pin';
   } else if (stepNumber === 3) {
     window.mode = 'select radius'
-    event.location = window.pinLoc;
+    event.location = [window.pinLoc[0] + 0.5, window.pinLoc[1] + 1];
     step.innerText = '4/4';
     instruction.innerText = 'Select Event Radius';
     responseEl.style.display = 'none';
     promptBtn.style.display = 'none';
 
+    info.style.paddingBottom = 0;
     eventConfirm.style.display = 'flex';
   }
 }
