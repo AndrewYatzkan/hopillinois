@@ -102,6 +102,7 @@ div.loading span.visible {
 	/* font-size: 3rem; */
 	margin: -0.25rem 1rem;
 	font-family: 'VT323', monospace;
+	padding: 1px 6px;
 }
 
 /* .create-event img {
