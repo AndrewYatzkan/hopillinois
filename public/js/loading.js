@@ -3,6 +3,9 @@
 	let loading = document.querySelector('div.loading');
 	
 	// await Promise.all(promises);
+	await new Promise((resolve, reject) => {
+		setTimeout(resolve, 1_000);
+	});
 	
 	playBtn.classList.add('visible');
 	playBtn.onclick = () => {
