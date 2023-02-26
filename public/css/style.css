@@ -1,6 +1,8 @@
 :root {
 	--illini-blue: #13294B;
 	--illini-orange: #FF5F05;
+	--cancel: #E03325;
+	--eggshell: #F3EFDE;
 }
 
 body {
@@ -10,14 +12,36 @@ body {
 	font-family: 'VT323', monospace;
 }
 
+@keyframes fade-in {
+	0% { opacity: 0; },
+	100% { opacity: 1!important; }
+}
+
+/* @keyframes bg-fade-out {
+	0% { background-opacity: 1!important; },
+	100% { background-opacity: 0.67!important; }
+} */
+
+.hidden {
+	display: none;
+}
+
 div.loading {
+	background: #13294Bff;
+	/* animation-name bg-fade-out; */
+	/* animation-duration: 5s; */
+	/* animation: 5s bg-fade-out forwards; */
+	/* animation-delay: 2s; */
 	position: absolute;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	right: 0;
+	z-index: 1;
 
-	background: var(--illini-blue);
+	/* background: var(--illini-blue); */
+	/* background: #13294Baa; */
+	/* background: #13294Bff; */
 	
 	display: flex;
 	flex-direction: column;
@@ -26,20 +50,29 @@ div.loading {
 }
 
 div.loading span {
-	color: white;
+	color: var(--eggshell);
 	font-size: 2rem;
 	opacity: 0;
 	line-height: 2rem;
 }
 
-@keyframes fade-in {
-	0% { opacity: 0 },
-	100% { opacity: 1!important }
-}
-
 div.loading span.visible {
 	animation: 1s fade-in forwards;
 	opacity: 1;
+}
+
+.create-event {
+	/* display: flex; */
+	background-color: var(--illini-orange);
+	align-items: center;
+	justify-content: center;
+	height: 4rem;
+	width: 4rem;
+	border: none;
+	border-radius: 5px;
+	font-size: 3rem;
+	margin: 1rem;
+	display: none;
 }
 
 img.alma {
@@ -84,33 +117,41 @@ div.overlay * {
 	margin: 1rem;
 	border-radius: 3px;
 	background: var(--illini-blue);
-	display: flex;
+	/* display: flex; */
+	display: none;
 	align-items: center;
 	justify-content: space-between;
 }
 
+.stats {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .avatar-preview {
-	background: white;
+	background: var(--eggshell);
 	margin: 5px;
 	border-radius: 3px;
-	height: calc(5rem - 10px);
+	height: calc(5rem - 12px);
+	width: calc(5rem - 12px);
 }
 
 .usertab .username {
-	color: white;
+	color: var(--eggshell);
 	font-size: 3rem;
+	margin-left: 1rem;
 }
 
 .usertab .stats {
 	height: 100%;
 	width: 5rem;
-	background: green;
 }
 
 .usertab .stats img {
-	height: 100%;
-	padding: 5px 0;
+	height: 4rem;
 	box-sizing: border-box;
+	image-rendering: pixelated;
 }
 
 .prompt {
@@ -122,7 +163,6 @@ div.overlay * {
 	margin: 1rem;
 	border-radius: 3px;
 	background: var(--illini-blue);
-/*	display: flex;*/
 	flex-direction: column;
 
 	display: none;
@@ -130,16 +170,94 @@ div.overlay * {
 
 .prompt .info {
 	font-size: 2rem;
-	color: white;
+	color: var(--eggshell);
+	padding-bottom: 0.75rem;
 }
 
 .prompt .info .step {
 	color: var(--illini-orange);
 }
 
+.prompt .response {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	height: 3rem;
+}
+
+.prompt .backarrow {
+	width: 3rem;
+	margin-right: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'VT323', monospace;
+	display: none;
+}
+
+.prompt .frontarrow {
+	width: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'VT323', monospace;
+}
+
+
 .prompt input {
 	background: rgba(191, 191, 191, 0.25);
 	outline: none;
 	border: none;
 	border-radius: 3px;
+	width: 15rem;
+	margin-right: 0.75rem;
+	font-size: 1rem;
+}
+
+::placeholder {
+    text-align: center;
+	padding: 0px 5px;
+	font-family: 'VT323', monospace;;
+}
+
+.cache {
+	display: none;
+}
+
+.event-confirm {
+	display: none;
+	flex-direction: row;
+	position: absolute;
+	bottom: 0;
+	height: 5rem;
+	width: calc(100% - 2rem);
+	margin: 1rem;
+	border-radius: 3px;
+	display: none;
+	align-items: center;
+	justify-content: start;
+}
+
+.event-confirm .cancel {
+	width: 5rem;
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'VT323', monospace;
+	background-color: var(--cancel);
+	border-style: none;
+	border-radius: 5px;
+	margin-right: 0.75rem;
+}
+.event-confirm .confirm {
+	width: 75%;
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'VT323', monospace;
+	background-color: var(--eggshell);
+	border-style: none;
+	border-radius: 5px;
 }

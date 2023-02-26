@@ -135,16 +135,17 @@ app.get('/login', (req, res) => {
 
 setInterval(() => {
     io.emit('game state', {
-        players: sockets.map(x => { return { netID: x.netID, position: x.position, avatar: x.avatar} }),
+        players: sockets.map(x => { return { netID: x.netID, targetPosition: x.targetPosition, position: x.position, avatar: x.avatar} }),
         events: events.map(x => { return {
             creator: x.creator,
             location: x.location,
+            radius: x.radius,
             name: x.name,
             start: new Date(x.start),
             end: new Date(x.end)
         } })
     });
-}, 1/30 * 1000);
+}, 1/120 * 1000);
 
 let events = [];
 
@@ -175,21 +176,22 @@ io.on('connection', socket => {
 		// console.log(sockets);
 	});
 
-    socket.on('player update', ({position, avatar}) => {
+    socket.on('player update', ({targetPosition, position, avatar}) => {
         for (let i = 0; i < sockets.length; i++) {
             if (sockets[i].netID === netID) {
+                sockets[i].targetPosition = targetPosition;
                 sockets[i].position = position;
                 sockets[i].avatar = avatar;
             }
         }
     });
 
-    socket.on('new event', async ({name, location, start, end}) => {
+    socket.on('new event', async ({name, description, location, radius, start, end}) => {
         // 1. add to database
         // 2. update local variable
 
         // database stuff...
-        await Event.create({creator: netID, name, location, start, end, radius: 2});
+        await Event.create({creator: netID, name, description, location, radius, start, end});
         fetchEvents();
     });
 });

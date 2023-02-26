@@ -20,6 +20,6 @@ setInterval(() => {
 	socket.emit('player update', stateCopy);
 }, 1/30 * 1000);
 
-function createEvent(name, location, start, end) {
-	socket.emit('new event', {name, location, start, end});
+function createEvent(name, description, location, radius, start, end) {
+	socket.emit('new event', {name, description, location, radius, start, end});
 }
