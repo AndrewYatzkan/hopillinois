@@ -84,8 +84,10 @@ function drawPlayers() {
 		if (player.position[0] < 0 || player.position[0] >= MAP_DIMS[0] ||
 			player.position[1] < 0 || player.position[1] >= MAP_DIMS[1]) continue; // don't draw out of bounds players
 	
+		if (!player.avatar) continue; // not loaded yet
 		let {image, sx, sy, sWidth, sHeight, dWidth, dHeight} = player.avatar;
-		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE + (dWidth - dHeight), dWidth, dHeight);
+		// ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE, player.position[1] * TILE_SIZE + (dWidth - dHeight), dWidth, dHeight);
+		ctx.drawImage(images[image], sx, sy, sWidth, sHeight, player.position[0] * TILE_SIZE + dWidth / 2, player.position[1] * TILE_SIZE + (dWidth - dHeight / 2), dWidth, dHeight);
 		// ctx.drawImage(images[image], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
 
 		let name = player.netID;
@@ -94,9 +96,9 @@ function drawPlayers() {
 		let height = 20;
 		let width = textWidth + 9 + 15;
 		let verticalPadding = 5;
-		let x = player.position[0] * TILE_SIZE - player.avatar.dWidth / 2;
+		let x = player.position[0] * TILE_SIZE;
 		// let y = player.position[1] * TILE_SIZE - 2 * verticalPadding;
-		let y = player.position[1] * TILE_SIZE + (dWidth - dHeight) - height - verticalPadding;
+		let y = player.position[1] * TILE_SIZE + (dWidth - dHeight / 2) - height - verticalPadding;
 		ctx.drawImage(images['nametag'], 0, 0, 55, 16, x, y, width, height)
 		ctx.drawImage(images['greendot'], 0, 0, 9, 9, x + 5, y + 5, 9, 9)
 

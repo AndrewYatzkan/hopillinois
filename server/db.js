@@ -16,4 +16,4 @@ mongoose.connect(CONNECTION_STRING, {
 const connection = mongoose.connection;
 connection.once('open', () => console.log('MongoDB database connection established successfully'));
 
-module.exports = { mongoose, mongoUrl: CONNECTION_STRING, IS_PROD: false };
+module.exports = { mongoose, mongoUrl: CONNECTION_STRING };
