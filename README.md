@@ -9,5 +9,5 @@ hopIllinois is a 2-d platform game for University of Illinois students. The game
 
 ## Usage
 1. Log in to the app with Google using your @illinois.edu email ID.
-2. Congratulations! You're in the app.
+2. Your location will update in the game in real time as you move around campus.
 3. Create events by clicking the + button on the top left.
