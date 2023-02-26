@@ -131,6 +131,7 @@ promptBtn.onclick = () => {
   } else if (stepNumber === 3) {
     confirmEvent.classList.remove('hidden');
     cancelEvent.style.width = '5rem';
+    cancelEvent.style.marginRight = '0.75rem'
     responseEl.style.width = 'initial';
     window.mode = 'select radius'
     event.location = [window.pinLoc[0] + 0.5, window.pinLoc[1] + 1];
