@@ -115,7 +115,7 @@ app.get('/login/google', (req, res, next) => {
 }, passport.authenticate('google'));
 
 app.get('/oauth2/redirect/google',
-    passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
+    passport.authenticate('google', { failureRedirect: '/login?failure', failureMessage: true }),
     (req, res) => res.redirect('/')
 );
 
@@ -125,8 +125,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    // TODO: login page
-    res.redirect('/login/google');
+    res.sendFile('login.html', {root: `${__dirname}/../public/`});
 });
 
 /**************************************

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>IlliniTown</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div class="loading">
+		<img class="alma" src="assets/alma.png">
+		<span>hopILLINOIS</span>
+		<img style="width: 10rem; padding-top: 5rem;" src="assets/googlesignin.png" onclick="location.href = '/login/google'">
+        <span class="error" style="font-size: 1rem; padding-top: 2rem; line-height: 1rem; color: #FF5F05">You must sign in with an @illinois.edu email</span>
+        <span class="error" style="font-size: 1rem; line-height: 1rem; color: #FF5F05">If you can't select an email, sign out of Google</span>
+	</div>
+    <script src="js/ui.js"></script>
+    <script>
+        if (location.search === '?failure') {
+            [...document.querySelectorAll('.error')].forEach(x => x.style.opacity = 1);
+        }
+    </script>
+</body>
+</html>

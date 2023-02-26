@@ -6,9 +6,43 @@
 	
 	playBtn.classList.add('visible');
 	playBtn.onclick = () => {
+		animate({
+			duration: 1000,
+			timing(timeFraction) {
+			  return timeFraction;
+			},
+			draw(progress) {
+			  elem.style.width = progress * 100 + '%';
+			}
+		});
 		loading.style.display = 'none';
 		window.mode = 'regular';
 		usertab.style.display = 'flex';
 		createEventBtn.style.display = 'flex';
+	}
+
+	let animate = ({timingFunction, draw, duration}) => {
+
+		let start = performance.now();
+	  
+		requestAnimationFrame(function animate(time) {
+		  // timeFraction goes from 0 to 1
+		  let timeFraction = (time - start) / duration;
+		  if (timeFraction > 1) timeFraction = 1;
+	  
+		  // calculate the current animation state
+		  let progress = timing(timeFraction)
+	  
+		  draw(progress); // draw it
+	  
+		  if (timeFraction < 1) {
+			requestAnimationFrame(animate);
+		  }
+	  
+		});
+	  }
+	
+	let moveOut = (x, timeFraction) => {
+		return Math.pow(timeFraction, 2) * ((x + 1) * timeFraction - x);
 	}
 })();
