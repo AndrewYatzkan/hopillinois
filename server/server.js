@@ -165,28 +165,39 @@ fetchEvents();
 setInterval(fetchEvents, 1000 * 60); // fetch events every minute
 
 let sockets = [];
+let socketIds = [];
 io.on('connection', socket => {
 	let netID = socket.request?.session?.passport?.user;
     console.log(netID, 'connected');
 	socket.on('ready', ({position}, cb) => {
 		if (!netID) return; // not authenticated
-        cb(netID);
+        socketIds.push(socket.id);
 
-		sockets.filter(x => x.netID === netID).forEach(x => x.socket.disconnect()); // users can have one socket at a time
+		sockets.filter(x => x.netID === netID).forEach(x => {
+            let id = x.socket.id;
+            socketIds = socketIds.filter(i => i !== id);
+            x.socket.disconnect();
+        }); // users can have one socket at a time
 		// race condition with push after?
 
 		sockets.push({netID, socket, position});
 
-		socket.on('disconnect', () => sockets = sockets.filter(x => x.netID !== netID));
-		// console.log(sockets);
+		socket.on('disconnect', () => {
+            socketIds = socketIds.filter(i => i !== socket.id);
+            sockets = sockets.filter(x => x.netID !== netID);
+        });
+
+        cb(netID);
 	});
 
     socket.on('player update', ({targetPosition, position, avatar}) => {
         for (let i = 0; i < sockets.length; i++) {
             if (sockets[i].netID === netID) {
+                if (socketIds.indexOf(socket.id) === -1) continue;
                 sockets[i].targetPosition = targetPosition;
                 sockets[i].position = position;
                 sockets[i].avatar = avatar;
+                // console.log(avatar.image, position, sockets[i].position, netID, socket.id, socketIds.indexOf(socket.id), sockets.length);
             }
         }
     });

@@ -123,6 +123,7 @@ function drawPlayers() {
 		// ctx.drawImage(images[image], player.position[0] * TILE_SIZE, TILE_SIZE * player.position[1] - (80 - 64), 64, 80);
 
 		let name = player.netID;
+		ctx.font = `15px VT323, monospace`;
 		var textWidth = ctx.measureText(name).width;
 
 		let height = 20;
@@ -135,7 +136,6 @@ function drawPlayers() {
 		ctx.drawImage(images['greendot'], 0, 0, 9, 9, x + 5, y + 5, 9, 9)
 
 		ctx.fillStyle = 'black';
-		ctx.font = `15px VT323, monospace`;
 		ctx.textAlign = 'left';
 		ctx.textBaseline = 'middle'; // default: 'alphabetic'
 		ctx.fillText(name, x + 9 + 5 + 3, y + height / 2 - 1);

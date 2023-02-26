@@ -23,7 +23,7 @@ body {
 } */
 
 .hidden {
-	display: none;
+	display: none!important;
 }
 
 div.loading {
@@ -49,6 +49,7 @@ div.loading {
 	align-items: center;
 }
 
+
 div.loading span {
 	color: var(--eggshell);
 	font-size: 2rem;
@@ -59,6 +60,11 @@ div.loading span {
 div.loading span.visible {
 	animation: 1s fade-in forwards;
 	opacity: 1;
+}
+
+.bigrightarrow {
+	height: 2rem;
+	image-rendering: pixelated;
 }
 
 .create-event {
@@ -136,6 +142,13 @@ div.overlay * {
 	pointer-events: initial;
 }
 
+.desktop-container {
+	display: flex;
+	width: screen;
+	align-items: center;
+	justify-content: center;
+}
+
 .usertab {
 	position: absolute;
 	bottom: 0;
@@ -148,6 +161,7 @@ div.overlay * {
 	display: none;
 	align-items: center;
 	justify-content: space-between;
+	max-width: 800px;
 }
 
 .stats {
@@ -191,6 +205,9 @@ div.overlay * {
 	border-radius: 3px;
 	background: var(--illini-blue);
 	flex-direction: column;
+	max-width: 800px;
+	align-items: center;
+	justify-content: center;
 
 	display: none;
 }

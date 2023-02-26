@@ -31,13 +31,18 @@ createEventBtn.onclick = () => {
   event = {};
   createEventBtn.style.display = 'none';
   changeViewBtn.style.display = 'none';
+  zoomSlider.parentElement.classList.add('hidden');
 
-  step.innerText = '1 / 4';
+  step.innerText = '1/4';
   instruction.innerText = 'Name Your Event.';
   promptInput.placeholder = 'frisbee on the quad'
 
   promptEl.style.display = 'flex';
   usertab.style.display = 'none';
+
+  confirmEvent.classList.add('hidden');
+  cancelEvent.style.width = '100%';
+  eventConfirm.style.display = 'flex';
 }
 
 window.mode = 'zoomed out';
@@ -61,12 +66,16 @@ cancelEvent.onclick = () => {
 }
 
 function resetEventCreation() {
+  confirmEvent.classList.remove('hidden');
+  cancelEvent.style.width = '5rem';
+  responseEl.style.width = 'initial';
   info.style.paddingBottom = '0.75rem';
   promptBtn.style.display = 'inline';
   promptBtn.innerHTML = '<img src="assets/rightarrow.png"></img>';
   promptInput.style.display = 'inline';
   createEventBtn.style.display = 'block';
   changeViewBtn.style.display = 'block';
+  zoomSlider.parentElement.classList.remove('hidden');
   promptEl.style.display = 'none';
   usertab.style.display = 'flex';
   responseEl.style.display = 'flex';
@@ -111,12 +120,18 @@ promptBtn.onclick = () => {
     instruction.innerText = 'Where Is It? (drag)';
     promptInput.style.display = 'none';
     promptBtn.innerHTML = '<img src="assets/pin.png">&nbsp;here';
+    // promptBtn.style.width = '10rem';
     promptBtn.style.width = '100%';
+    responseEl.style.width = '100%';
+    
     
 
     overlay.style.background = 'rgba(0, 0, 0, 0.4)';
     window.mode = 'drop pin';
   } else if (stepNumber === 3) {
+    confirmEvent.classList.remove('hidden');
+    cancelEvent.style.width = '5rem';
+    responseEl.style.width = 'initial';
     window.mode = 'select radius'
     event.location = [window.pinLoc[0] + 0.5, window.pinLoc[1] + 1];
     step.innerText = '4/4';
