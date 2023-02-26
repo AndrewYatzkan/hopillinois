@@ -287,9 +287,9 @@ function drawMap() {
 	ctx.fillStyle = 'black';
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'bottom';
-	ctx.fillText('You appear to be outside of Bardeen Quad (or you didn\'t allow location access)', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE - 1 * TILE_SIZE) * z);
+	ctx.fillText('You appear to be outside of Bardeen Quad (or you didn\'t allow location access)', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE + 2 * TILE_SIZE) * z);
 	ctx.textBaseline = 'top';
-	ctx.fillText('Tap the globe icon to view it from afar!', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE - 1 * TILE_SIZE) * z);
+	ctx.fillText('Tap the globe icon to view it from afar!', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE + 2 * TILE_SIZE) * z);
 	ctx.scale(z, z);
 
 	// for (let i = 0; i < MAP.length; i++) {
