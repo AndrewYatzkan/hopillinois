@@ -33,14 +33,14 @@ async function init() {
   setInterval(async () => {
     let loc = await getGeolocation();
     if (loc) clientLocation = loc;
-  }, 10_000);
+  }, 1_000);
 }
 
 // returns {latitude, longitude, accuracy, ...}
 async function getGeolocation() {
   let options = {
     enableHighAccuracy: true, // try to use GPS chip
-    timeout: 10_000,
+    timeout: 1_000,
     maximumAge: 0 // don't use a cached position
   };
   try {
