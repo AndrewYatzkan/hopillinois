@@ -147,7 +147,7 @@ let sprites = ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5'];
 let state = {
 	// position: [40.1106138, -88.229867],
 	position: [0, 0],
-	targetPosition: [-50, 50],
+	targetPosition: [-50, -50],
 	zoom: 1.5,
 	avatar: {
 		frame: 0,
@@ -283,7 +283,7 @@ function drawMap() {
 
 	let z = state.zoom;
 	ctx.scale(1/z, 1/z);
-	ctx.font = `25px VT323, monospace`;
+	ctx.font = `15px VT323, monospace`;
 	ctx.fillStyle = 'black';
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'bottom';
