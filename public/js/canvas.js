@@ -165,6 +165,7 @@ let state = {
 };
 
 changeViewBtn.children[1].firstElementChild.src = state.avatar.image.src;
+document.querySelector('div.avatar-preview img').src = state.avatar.image.src;
 
 document.body.addEventListener('keydown', e => {
 	let inc = 1.0;
