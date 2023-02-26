@@ -167,7 +167,9 @@ let state = {
 changeViewBtn.children[1].firstElementChild.src = state.avatar.image.src;
 document.querySelector('div.avatar-preview img').src = state.avatar.image.src;
 
+window.keyboardMode = false;
 document.body.addEventListener('keydown', e => {
+	if (!window.keyboardMode) return;
 	let inc = 1.0;
 	// let inc = 0.5;
     switch (e.key) {
@@ -394,7 +396,7 @@ function draw() {
 	// if (!netID) return;
 	let z = state.zoom;
 
-	if (clientLocation) {
+	if (clientLocation && !window.keyboardMode) {
 		let {latitude, longitude} = clientLocation;
 		state.targetPosition = latLonToCoords(latitude, longitude);
 	}
