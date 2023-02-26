@@ -147,7 +147,7 @@ let sprites = ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5'];
 let state = {
 	// position: [40.1106138, -88.229867],
 	position: [0, 0],
-	targetPosition: [4, 5],
+	targetPosition: [-50, 50],
 	zoom: 1.5,
 	avatar: {
 		frame: 0,
