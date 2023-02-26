@@ -164,6 +164,8 @@ let state = {
 	}
 };
 
+changeViewBtn.children[1].firstElementChild.src = state.avatar.image.src;
+
 document.body.addEventListener('keydown', e => {
 	let inc = 1.0;
 	// let inc = 0.5;
@@ -367,7 +369,7 @@ function drawOutOfBounds() {
 }
 
 
-function drawEvents(drawText=false) {
+function drawEvents(drawText=false, z) {
 	for (let {location, name, radius} of events) {
 		// ctx.fillStyle = 'red';
 		ctx.font = `40px VT323, monospace`;
@@ -382,7 +384,7 @@ function drawEvents(drawText=false) {
 		}
 			
 
-		let z = state.zoom;
+		if (z === undefined) z = state.zoom;
 		ctx.scale(1/z, 1/z);
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'alphabetic';
@@ -394,11 +396,11 @@ function drawEvents(drawText=false) {
 	}
 }
 
-window.addEventListener('wheel', e => {
-	let min = 0.7;
-	let max = 2.3;
-	state.zoom = Math.max(Math.min(state.zoom + e.deltaY * 0.01, max), min);
-});
+// window.addEventListener('wheel', e => {
+// 	let min = 0.7;
+// 	let max = 2.3;
+// 	state.zoom = Math.max(Math.min(state.zoom + e.deltaY * 0.01, max), min);
+// });
 
 window.netID = false;
 window.players = [];
@@ -448,8 +450,9 @@ function draw() {
 		let x = state.position[0] * TILE_SIZE;
 		let y = state.position[1] * TILE_SIZE;
 		if (window.mode === 'zoomed out') {
-			z = 0.3;
-			x = y = 15 * TILE_SIZE;
+			// z = 0.3;
+			z = 0.18;
+			x = y = 31 / 2 * TILE_SIZE;
 		}
 
 		if (window.mode === 'regular')
@@ -483,7 +486,8 @@ function draw() {
 			drawAvatar(); // draws sprite in middle of screen
 
 		ctx.translate(-x, -y); // new 0, 0 is x, y
-		drawEvents(true);
+		if (window.mode === 'zoomed out') drawEvents(true, 0.3);
+		else drawEvents(true);
 		ctx.translate(x, y);
 
 		ctx.scale(1/z, 1/z);

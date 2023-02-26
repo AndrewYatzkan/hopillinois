@@ -7,6 +7,7 @@ font.load().then(font => {
 let overlay = document.querySelector('.overlay');
 let usertab = document.querySelector('.usertab');
 let createEventBtn = document.querySelector('button.create-event');
+let changeViewBtn = document.querySelector('button.change-view');
 let promptEl = document.querySelector('div.prompt');
 let step = document.querySelector('span.step');
 let instruction = document.querySelector('span.instruction');
@@ -15,6 +16,11 @@ let promptInput = promptEl.querySelector('input');
 let responseEl = document.querySelector('.response');
 let eventConfirm = document.querySelector('.event-confirm');
 let info = document.querySelector('.prompt .info');
+let zoomSlider = document.querySelector('input.slider');
+
+zoomSlider.oninput = () => {
+  state.zoom = zoomSlider.value / 10;
+}
 
 let confirmEvent = document.querySelector('.event-confirm .confirm');
 let cancelEvent = document.querySelector('.event-confirm .cancel');
@@ -24,6 +30,7 @@ let event;
 createEventBtn.onclick = () => {
   event = {};
   createEventBtn.style.display = 'none';
+  changeViewBtn.style.display = 'none';
 
   step.innerText = '1 / 4';
   instruction.innerText = 'Name Your Event.';
@@ -58,7 +65,8 @@ function resetEventCreation() {
   promptBtn.style.display = 'inline';
   promptBtn.innerHTML = '<img src="assets/rightarrow.png"></img>';
   promptInput.style.display = 'inline';
-  createEventBtn.style.display = 'flex';
+  createEventBtn.style.display = 'block';
+  changeViewBtn.style.display = 'block';
   promptEl.style.display = 'none';
   usertab.style.display = 'flex';
   responseEl.style.display = 'flex';
@@ -66,6 +74,22 @@ function resetEventCreation() {
   window.mode = 'regular';
   eventConfirm.style.display = 'none';
   overlay.style.background = 'transparent';
+}
+
+changeViewBtn.onclick = () => {
+  if (window.mode === 'zoomed out') {
+    // changeViewBtn.innerHTML = '<img style="width: 100%;" src="assets/globe.png"></img>';
+    changeViewBtn.children[1].classList.add('hidden');
+    changeViewBtn.children[0].classList.remove('hidden');
+    zoomSlider.parentElement.classList.remove('hidden');
+    window.mode = 'regular';
+  } else {
+    changeViewBtn.children[0].classList.add('hidden');
+    changeViewBtn.children[1].classList.remove('hidden');
+    zoomSlider.parentElement.classList.add('hidden');
+    // changeViewBtn.innerHTML = `<div class="crop"><img style="width: calc(1.5 * 832px);height: calc(1.5 * 1344px);margin-top: -208px;margin-left: -30px;" src="${state.avatar.image.src}"></img></div>`;
+    window.mode = 'zoomed out';
+  }
 }
 
 promptBtn.onclick = () => {
