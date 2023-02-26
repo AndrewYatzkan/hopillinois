@@ -280,6 +280,18 @@ const TILE_SIZE = 64;
 function drawMap() {
 	ctx.drawImage(images['grassbackdrop'], 0, 0, TILE_SIZE * MAP_DIMS[0], TILE_SIZE * MAP_DIMS[1]);
 	ctx.drawImage(images['map'], 0, 0, TILE_SIZE * MAP_DIMS[0], TILE_SIZE * MAP_DIMS[1]);
+
+	let z = state.zoom;
+	ctx.scale(1/z, 1/z);
+	ctx.font = `25px VT323, monospace`;
+	ctx.fillStyle = 'black';
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'bottom';
+	ctx.fillText('You appear to be outside of Bardeen Quad (or you didn\'t allow location access)', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE - 1 * TILE_SIZE) * z);
+	ctx.textBaseline = 'top';
+	ctx.fillText('Tap the globe icon to view it from afar!', (-50 * TILE_SIZE + TILE_SIZE / 2) * z, (-50 * TILE_SIZE - 1 * TILE_SIZE) * z);
+	ctx.scale(z, z);
+
 	// for (let i = 0; i < MAP.length; i++) {
 	// 	for (let j = 0; j < MAP[i].length; j++) {
 	// 		let x = j * TILE_SIZE;
