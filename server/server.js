@@ -50,6 +50,12 @@ app.use(passport.session());
 
 app.use(express.json());
 
+// force HTTPS for prod
+app.use((req, res, next) => {
+    if (PROD && !request.secure) return res.redirect("https://" + request.headers.host + request.url);
+    next();
+})
+
 // https://github.com/jaredhanson/passport-google-oauth2
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
