@@ -52,7 +52,7 @@ app.use(express.json());
 
 // force HTTPS for prod
 app.use((req, res, next) => {
-    if (PROD && !request.secure) return res.redirect("https://" + request.headers.host + request.url);
+    if (PROD && !req.secure) return res.redirect("https://" + req.headers.host + req.url);
     next();
 })
 
