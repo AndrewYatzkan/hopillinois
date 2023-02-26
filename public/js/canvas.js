@@ -283,7 +283,7 @@ function drawMap() {
 
 	let z = state.zoom;
 	ctx.scale(1/z, 1/z);
-	ctx.font = `15px VT323, monospace`;
+	ctx.font = `10px VT323, monospace`;
 	ctx.fillStyle = 'black';
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'bottom';
