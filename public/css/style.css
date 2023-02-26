@@ -10,6 +10,7 @@ body {
 	padding: 0;
 	overflow: hidden;
 	font-family: 'VT323', monospace;
+	-webkit-tap-highlight-color: transparent;
 }
 
 @keyframes fade-in {
