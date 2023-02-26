@@ -125,8 +125,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    // TODO: login page
-    res.redirect('/login/google');
+    res.sendFile('login.html', {root: `${__dirname}/../public/`});
 });
 
 /**************************************
